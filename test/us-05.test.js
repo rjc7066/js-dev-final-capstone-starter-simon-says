@@ -29,7 +29,7 @@ describe("US-05: resetGame(text)", () => {
     const resetGame = await page.evaluate(() => {
       return window.resetGame.toString();
     });
-    expect(resetGame).toContain('setText(heading, "Simon Says")');
+    expect(resetGame).toContain('setText(heading, "Pumpkins Proclaim")');
   });
 
   it("should use `startButton.classList.remove('hidden')` to show the start button", async () => {
