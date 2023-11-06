@@ -17,10 +17,14 @@ html {
 body {
   color: #FF6C22;
   font-family: 'meltedMonster', sans-serif;
+}
+
+.game-section {
   display: flex;
+  flex-direction: 'column';
   justify-content: center;
-  height: 100vh;
   align-items: center;
+  padding: 20px;
 }
 
 main {
@@ -37,7 +41,6 @@ h1 {
 }
 
 .start-button {
-  display: inline-block;
   height: 38px;
   padding: 0 30px;
   color: #FF6C22;
