@@ -55,15 +55,14 @@ h1 {
 }
 
 .difficulty-button {
-  height: 24px;
+  height: 32px;
   padding: 0 30px;
-  color: #FF6C22;
+  color: white;
   text-align: center;
   font-size: 14px;
   font-weight: 600;
-  text-transform: uppercase;
-  background-color: transparent;
-  border: 3px solid #FF6C22;
+  background-color: rgba(59, 1, 1, 0.6);
+  border: 3px solid black;
   border-radius: 5px;
   cursor: pointer;
 }
