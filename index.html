@@ -10,7 +10,7 @@
   <body>
     <main>
       <h1 class="js-heading">Pumpkins Proclaim</h1>
-      <div class="game-section">
+      <div class="game-section"></div>
         <section class="game-controls">
           <span class="status hidden js-status"></span>
           <button class="start-button js-start-button">Start</button>
@@ -25,6 +25,15 @@
           <div class="pad pad-yellow js-pad-yellow" data-color="yellow"></div>
         </section>
       </div>
+
+      <section class="game-controls">
+        <h2 class="difficulty-select-text">Difficulty Selection</h2>
+        <button class="difficulty-button initial-select" value="0">0</button>
+        <button class="difficulty-button initial-select button-selected" value="1">1</button>
+        <button class="difficulty-button initial-select" value="2">2</button>
+        <button class="difficulty-button initial-select" value="3">3</button>
+        <button class="difficulty-button initial-select" value="4">4</button>
+      </section>
 
     </main>
     <script src="./src/index.js"></script>

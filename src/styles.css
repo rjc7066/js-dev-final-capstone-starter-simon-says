@@ -54,6 +54,45 @@ h1 {
   cursor: pointer;
 }
 
+.difficulty-button {
+  height: 24px;
+  padding: 0 30px;
+  color: #FF6C22;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: transparent;
+  border: 3px solid #FF6C22;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.difficulty-select-text {
+  padding-bottom: 20px;
+  text-shadow: 4px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+}
+
+.initial-select:hover,
+.initial-select:focus {
+  box-shadow:
+  0 0 20px 10px #e5bb60,
+  0 0 40px 20px rgb(244, 81, 21),
+  0 0 70px 35px rgb(75, 70, 28);
+}
+
+.button-selected {
+  background-color: #e5bb60;
+  box-shadow:
+  0 0 10px 5px #e5bb60,
+  0 0 20px 10px rgb(244, 81, 21),
+  0 0 30px 5px rgb(75, 70, 28);
+}
+
+.button-disabled {
+  cursor: not-allowed;
+}
+
 .start-button:hover {
   color: #FF9209;
   font-size: 18px;

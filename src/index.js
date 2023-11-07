@@ -6,6 +6,9 @@
  const statusSpan = document.querySelector('.js-status');
  const heading = document.querySelector('.js-heading');
  const padContainer = document.querySelector('.js-pad-container');
+ const difficultyButtons = document.querySelectorAll('.difficulty-button');
+ const difficultySelectText = document.querySelector('.difficulty-select-text');
+ const allPads = document.querySelectorAll('.pad');
 
 /**
  * VARIABLES
@@ -14,6 +17,7 @@ let computerSequence = []; // track the computer-generated sequence of pad press
 let playerSequence = []; // track the player-generated sequence of pad presses
 let maxRoundCount = 0; // the max number of rounds, varies with the chosen level
 let roundCount = 0; // track the number of rounds that have been played so far
+let currentDifficulty = 1;
 
 const victorySound = new Audio("https://rjc7066.github.io/js-dev-final-capstone-starter-simon-says/assets/victory.mp3");
 const defeatSound = new Audio("https://rjc7066.github.io/js-dev-final-capstone-starter-simon-says/assets/fatality.mp3");
@@ -62,6 +66,25 @@ const defeatSound = new Audio("https://rjc7066.github.io/js-dev-final-capstone-s
 
 padContainer.addEventListener("click", padHandler);
 startButton.addEventListener("click", startButtonHandler);
+difficultyButtons.forEach((button) => {
+  button.addEventListener('click', difficultyButtonHandler);
+})
+
+function difficultyButtonHandler(event) {
+  const difficultyMessageMapping = {
+    '0': "Super Easy Mode. You literally can't lose.",
+    '1': "Normal Mode.",
+    2: "Hard Mode.",
+    3: "Very Hard Mode.",
+    4: "Pumpkin Mode."
+  }
+  currentDifficulty = event.target.value;
+  difficultySelectText.textContent = difficultyMessageMapping[currentDifficulty];
+  difficultyButtons.forEach((button) => {
+    button.classList.remove('button-selected');
+  })
+  event.target.classList.add('button-selected');
+}
 
 /**
  * EVENT HANDLERS
@@ -82,8 +105,14 @@ startButton.addEventListener("click", startButtonHandler);
  *
  */
 function startButtonHandler() {
+  // disable the difficulty selector buttons
+  difficultyButtons.forEach((button) => {
+    button.classList.add('button-disabled');
+    button.classList.remove('initial-select');
+  })
+
   // Call setLevel() to set the level of the game
-  maxRoundCount = setLevel();
+  maxRoundCount = setLevel(currentDifficulty);
 
   // Increment the roundCount from 0 to 1
   roundCount++;
@@ -161,6 +190,7 @@ function padHandler(event) {
  */
 function setLevel(level = 1) {
   const levelMapping = {
+    0: 5,
     1: 8,
     2: 14,
     3: 20,
@@ -296,6 +326,47 @@ function activatePads(sequence) {
   console.log(computerSequence);
 }
 
+function disableAllPads() {
+  allPads.forEach((pad) => {
+    pad.classList.add('button-disabled');
+    pad.classList.add('unclickable');
+  })
+}
+
+function enableAllPads() {
+  allPads.forEach((pad) => {
+    pad.classList.remove('button-disabled');
+    pad.classList.remove('unclickable');
+  })
+}
+
+/**
+ * Only allows cursor events on the correct pad, super easy mode
+ * 
+ * 1. Determine the current color
+ * 
+ * 2. Add disabling classes to all pads
+ * 
+ * 3. Remove the disabling classes from the current color only
+ * 
+ * Not the most efficient way to do it, but it works.
+ */
+function highlightCurrentPadOnly() {
+  // Determine the current color
+  const currentColor = computerSequence[(playerSequence.length)] || computerSequence[0];
+  
+  // Add disabling classes to all pads
+  allPads.forEach((pad) => {
+    pad.classList.add('button-disabled');
+    pad.classList.add('unclickable');
+  })
+  
+  // Remove the disabling classes from the current color only
+  const currentColorPad = document.querySelector(`.pad-${currentColor}`);
+  currentColorPad.classList.remove('button-disabled');
+  currentColorPad.classList.remove('unclickable')
+}
+
 /**
  * Allows the player to play their turn.
  *
@@ -307,6 +378,11 @@ function playHumanTurn() {
   // Remove the "unclickable" class from the pad container so that each pad is clickable again
   padContainer.classList.remove("unclickable");
 
+  // if playing on super easy mode then only allow highlighting the current pad now
+  if (currentDifficulty == 0) {
+    highlightCurrentPadOnly();
+  }
+  
   // Display a status message showing the player how many presses are left in the round
   statusSpan.textContent = `Player's Turn: there are ${computerSequence.length - playerSequence.length} moves left in the round.`;
 }
@@ -338,6 +414,9 @@ function checkPress(color) {
   // Store the index of the `color` variable in a variable called `index`
   const index = playerSequence.push(color) - 1;
 
+  // make sure all pads are enabled
+  enableAllPads();
+
   // Calculate how many presses are left in the round
   let remainingPresses = computerSequence.length - playerSequence.length;
   
@@ -355,7 +434,15 @@ function checkPress(color) {
   }
 
   // If there are no presses left check the results of the round
-  if (remainingPresses === 0) checkRound();
+  if (remainingPresses === 0) {
+    checkRound();
+    return;
+  };
+
+  // if playing on super easy mode then only allow highlighting the current pad now
+  if (currentDifficulty == 0) {
+    highlightCurrentPadOnly();
+  }
 }
 
 /**
@@ -406,6 +493,10 @@ function resetGame(text) {
   startButton.classList.remove("hidden");
   statusSpan.classList.add("hidden");
   padContainer.classList.add("unclickable");
+  difficultyButtons.forEach((button) => {
+    button.classList.add('initial-select');
+    button.classList.remove('button-disabled');
+  })
 }
 
 /**
